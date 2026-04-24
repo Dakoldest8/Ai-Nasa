@@ -1,0 +1,65 @@
+# --- Python Artifacts ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# --- Large Models & Binaries (Auto-downloaded) ---
+# Ignore the Piper TTS folder (it's huge and OS-specific)
+piper/
+# Keep the custom BMO voice
+!piper/bmo.onnx
+!piper/bmo.onnx.json
+
+# Ignore large model files
+*.onnx
+*.bin
+*.tflite
+*.hef
+
+# Exception: Un-comment the line below if you WANT to share your custom wake word
+# !wakeword.onnx
+
+# --- User Configuration & Memory ---
+# Keep chat history local (Privacy)
+memory.json
+chat_memory.json
+
+# Keep personal API keys or settings local
+# (Optional: comment this out if you WANT to share your config)
+# config.json
+
+# --- Temporary/Generated Media ---
+*.wav
+*.mp3
+*.jpg
+*.png
+!favicon.png
+!faces/**/*.png
+!sounds/music/*.wav
+# Keep the generated BMO voice greetings and thinking sounds
+!sounds/greeting_sounds/*.wav
+!sounds/thinking_sounds/*.wav
+camera_capture.jpg
+current_image.jpg
+test_audio.wav
+
+# --- OS Generated Files ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# --- Debug / Temp files (created during dev/testing) ---
+test_*.py
+list_devices.py
+install_*.sh
+*.log
+payload.json
+pull.json
+setup_remote.sh
+tmp_hailo_whisper/
+whisper.cpp/build/

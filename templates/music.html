@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: #0f3460;
+            padding: 15px 20px;
+            border-bottom: 3px solid #00d4ff;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .music-player {
+            background: #1a1a2e;
+            border: 2px solid #00d4ff;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        .player-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .playlist {
+            background: #0f3460;
+            border: 2px solid #00d4ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .playlist-item {
+            background: #1a1a2e;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .playlist-item:hover {
+            background: #16213e;
+            cursor: pointer;
+        }
+        
+        .nav-btn {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎵 Music Player</h1>
+    </header>
+    
+    <div class="container">
+        <div class="music-player">
+            <div class="player-icon">🎵</div>
+            <h2>Music Controls</h2>
+            
+            <div class="controls">
+                <button onclick="playMusic()">▶️ Play</button>
+                <button onclick="pauseMusic()">⏸️ Pause</button>
+                <button onclick="nextTrack()">⏭️ Next</button>
+            </div>
+            
+            <div style="
+                background: #0f3460;
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 15px;
+                font-size: 14px;
+                color: #999;
+            ">
+                Now Playing: <span id="current-track" style="color: #00d4ff;">No track selected</span>
+            </div>
+        </div>
+        
+        <div class="playlist">
+            <h3 style="color: #00d4ff; margin-bottom: 15px;">Available Music</h3>
+            <div id="playlist" style="max-height: 300px; overflow-y: auto;">
+                Loading music...
+            </div>
+        </div>
+        
+        <a href="/" class="nav-btn">← Back to Dashboard</a>
+    </div>
+    
+    <script>
+        let currentTrack = 0;
+        let musicFiles = [];
+        
+        async function loadPlaylist() {
+            try {
+                const response = await fetch('/api/sounds/music');
+                const data = await response.json();
+                musicFiles = data.sounds || [];
+                
+                const playlistDiv = document.getElementById('playlist');
+                playlistDiv.innerHTML = '';
+                
+                if (musicFiles.length === 0) {
+                    playlistDiv.innerHTML = '<p style="color: #999;">No music files found</p>';
+                    return;
+                }
+                
+                musicFiles.forEach((file, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'playlist-item';
+                    item.innerHTML = `
+                        <span>${file}</span>
+                        <button style="width: auto; margin: 0;" onclick="selectTrack(${index})">Play</button>
+                    `;
+                    playlistDiv.appendChild(item);
+                });
+            } catch (err) {
+                document.getElementById('playlist').innerHTML = '<p style="color: #ff0000;">Error loading music</p>';
+            }
+        }
+        
+        function selectTrack(index) {
+            currentTrack = index;
+            document.getElementById('current-track').textContent = musicFiles[index];
+            playMusic();
+        }
+        
+        function playMusic() {
+            if (musicFiles.length === 0) {
+                alert('No music available');
+                return;
+            }
+            alert('Playing: ' + musicFiles[currentTrack] + '\n\nMusic will play on the AI Agent display.');
+        }
+        
+        function pauseMusic() {
+            alert('Music paused');
+        }
+        
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % musicFiles.length;
+            document.getElementById('current-track').textContent = musicFiles[currentTrack];
+            playMusic();
+        }
+        
+        // Load playlist on page load
+        loadPlaylist();
+    </script>
+</body>
+</html>

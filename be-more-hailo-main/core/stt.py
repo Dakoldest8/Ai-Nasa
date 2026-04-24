@@ -1,0 +1,79 @@
+import subprocess
+import logging
+import os
+import re
+from .config import WHISPER_CMD, WHISPER_MODEL
+
+logger = logging.getLogger(__name__)
+
+def transcribe_audio(audio_filepath: str) -> str:
+    """
+    Converts any audio file to 16kHz WAV and runs whisper.cpp to transcribe it.
+    """
+    if not os.path.exists(audio_filepath):
+        logger.error(f"Audio file not found: {audio_filepath}")
+        return ""
+
+    temp_wav = f"{audio_filepath}_16k.wav"
+
+    try:
+        # 1. Convert audio to 16kHz mono WAV (required by whisper.cpp)
+        logger.info(f"Converting {audio_filepath} to 16kHz WAV for whisper.cpp CPU inference...")
+        subprocess.run(
+            ["ffmpeg", "-y", "-i", audio_filepath, "-ar", "16000", "-ac", "1", temp_wav],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+
+        # 2. Run whisper.cpp
+        cmd = [WHISPER_CMD, "-m", WHISPER_MODEL, "-f", temp_wav, "-nt"]
+        logger.info(f"Running whisper.cpp transcription on the CPU... CMD: {' '.join(cmd)}")
+        try:
+            # stderr=DEVNULL: whisper prints verbose debug/timing info to stderr.
+            # We only want the clean transcript from stdout.
+            output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL).decode("utf-8").strip()
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Whisper CPU process failed with exit code {e.returncode}")
+            return ""
+
+        # 3. Clean up output (remove timestamps like [00:00:00.000 --> 00:00:02.000] or [BLANK_AUDIO])
+        output = re.sub(r'\[.*?\]', '', output).strip()
+
+        # Fix capitalization of BMO
+        output = re.sub(r'\b[Bb]emo\b', 'BMO', output)
+        output = re.sub(r'\b[Bb]eemo\b', 'BMO', output)
+        
+        # Clean hallucinated whispers from silence
+        lowered = output.lower()
+        hallucinations = [
+            "[silence]", "(silence)", "you", "thanks for watching!", 
+            "[blank_audio]", "thank you.", "thank you", "thanks."
+        ]
+        
+        # Whisper often hallucinates sound descriptions when mic picks up silence or
+        # ambient audio — e.g. "(eerie music)", "(background music)", "[SOUND]".
+        # Reject any output that is entirely inside parentheses or brackets.
+        is_parenthetical = bool(re.match(r'^\s*[\(\[].*[\)\]]\s*$', output.strip()))
+        
+        # If output is purely punctuation/noise (no letters or numbers) or a known hallucination
+        if is_parenthetical or lowered in hallucinations or not re.search(r'[a-zA-Z0-9]', lowered):
+            logger.info(f"Whisper hallucination filtered: {repr(output)}")
+            return ""
+
+        return output
+
+
+    except subprocess.CalledProcessError as e:
+        logger.error(f"FFmpeg or Whisper CPU process failed: {e}")
+        return ""
+    except Exception as e:
+        logger.error(f"Transcription Error: {e}")
+        return ""
+    finally:
+        # Clean up the temporary 16k wav file
+        if os.path.exists(temp_wav):
+            try:
+                os.remove(temp_wav)
+            except Exception as e:
+                logger.warning(f"Could not remove temp file {temp_wav}: {e}")

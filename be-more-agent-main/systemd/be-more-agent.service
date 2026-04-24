@@ -1,0 +1,16 @@
+[Unit]
+Description=Be More Pi Robot Agent
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/Ai-Robot/be-more-agent-main
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/pi/Ai-Robot/be-more-agent-main/venv/bin/python /home/pi/Ai-Robot/be-more-agent-main/agent.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

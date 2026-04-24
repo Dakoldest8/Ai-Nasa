@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timers & Reminders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: #0f3460;
+            padding: 15px 20px;
+            border-bottom: 3px solid #00d4ff;
+        }
+        
+        header h1 {
+            color: #00d4ff;
+            font-size: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .timer-form {
+            background: #1a1a2e;
+            border: 2px solid #00d4ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00d4ff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        
+        input, textarea {
+            width: 100%;
+            background: #0f3460;
+            border: 2px solid #00d4ff;
+            color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        button {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .timers-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .timer-item {
+            background: #1a1a2e;
+            border: 2px solid #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .timer-time {
+            font-size: 24px;
+            color: #00ff00;
+            margin-bottom: 10px;
+        }
+        
+        .timer-message {
+            color: #eee;
+            margin-bottom: 10px;
+        }
+        
+        .timer-btn {
+            background: #ff0000;
+            border-color: #ff0000;
+            padding: 8px;
+        }
+        
+        .timer-btn:hover {
+            background: #cc0000;
+        }
+        
+        .nav-btn {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>⏱️ Timers & Reminders</h1>
+    </header>
+    
+    <div class="container">
+        <div class="timer-form">
+            <h2 style="color: #00d4ff; margin-bottom: 20px;">Create Timer</h2>
+            
+            <div class="form-group">
+                <label>Minutes</label>
+                <input type="number" id="minutes" min="1" max="1440" value="5">
+            </div>
+            
+            <div class="form-group">
+                <label>Reminder Message</label>
+                <textarea id="message" rows="3" placeholder="What should I remind you about?">Timer finished!</textarea>
+            </div>
+            
+            <button onclick="setTimer()">⏱️ Set Timer</button>
+        </div>
+        
+        <div id="active-timers">
+            <h2 style="color: #00d4ff; margin-bottom: 20px;">Active Timers</h2>
+            <div class="timers-list" id="timers-list">
+                <p style="color: #999;">No active timers</p>
+            </div>
+        </div>
+        
+        <a href="/" class="nav-btn">← Back to Dashboard</a>
+    </div>
+    
+    <script>
+        const timers = [];
+        
+        function setTimer() {
+            const minutes = parseInt(document.getElementById('minutes').value);
+            const message = document.getElementById('message').value;
+            
+            if (minutes < 1) {
+                alert('Minutes must be at least 1');
+                return;
+            }
+            
+            fetch('/api/timer', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    minutes: minutes,
+                    message: message
+                })
+            }).then(r => r.json()).then(data => {
+                if (data.status === 'success') {
+                    alert('Timer set for ' + minutes + ' minutes!');
+                    document.getElementById('minutes').value = '5';
+                    document.getElementById('message').value = 'Timer finished!';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

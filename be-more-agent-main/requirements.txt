@@ -1,0 +1,36 @@
+# Be More Agent - Raspberry Pi AI Robot Requirements
+# 
+# Purpose: Local, offline-first AI agent for Raspberry Pi with:
+#   - Ollama LLM (local language model)
+#   - Whisper.cpp STT (speech-to-text)
+#   - Piper TTS (text-to-speech)
+#   - OpenWakeWord (wake-word detection)
+#   - FastAPI web interface (browser access over local network)
+#   - Interactive features (timers, games, music, camera vision)
+#
+# Platform: Raspberry Pi 5 (or Pi 4 with 4GB+) running Python 3.9+
+# Setup: bash setup.sh (on Pi) or manually: pip install -r requirements.txt
+#
+# For Windows web-assistant, use requirements_web_assistant.txt instead.
+
+# Audio/Speech
+sounddevice
+numpy
+scipy
+openwakeword
+onnxruntime
+Pillow
+
+# Local LLM Client
+ollama
+
+# Web Search
+duckduckgo-search
+
+# Web Interface (FastAPI)
+fastapi
+uvicorn
+python-multipart
+jinja2
+psutil
+

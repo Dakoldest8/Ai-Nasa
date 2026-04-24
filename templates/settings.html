@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: #0f3460;
+            padding: 15px 20px;
+            border-bottom: 3px solid #00d4ff;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .settings-section {
+            background: #1a1a2e;
+            border: 2px solid #00d4ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        h3 {
+            color: #00d4ff;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .setting-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        label {
+            display: block;
+            color: #999;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            background: #0f3460;
+            border: 2px solid #00d4ff;
+            color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        button {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .nav-btn {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .info-box {
+            background: #0f3460;
+            border-left: 4px solid #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>⚙️ Settings</h1>
+    </header>
+    
+    <div class="container">
+        <div class="settings-section">
+            <h2>Model Configuration</h2>
+            <div class="info-box">
+                Current models will be shown below. To change them, edit robot_config.json and restart the agent.
+            </div>
+            
+            <div class="setting-item">
+                <label>LLM Model</label>
+                <div id="llm-model" style="padding: 10px; background: #0f3460; border-radius: 5px;">Loading...</div>
+            </div>
+            
+            <div class="setting-item">
+                <label>Vision Model</label>
+                <div id="vision-model" style="padding: 10px; background: #0f3460; border-radius: 5px;">Loading...</div>
+            </div>
+            
+            <div class="setting-item">
+                <label>Voice Model</label>
+                <div id="voice-model" style="padding: 10px; background: #0f3460; border-radius: 5px;">Loading...</div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h2>Pronunciation Overrides</h2>
+            <div class="info-box">
+                Add custom pronunciations to help the AI say words the way you want.
+            </div>
+            
+            <div class="setting-item">
+                <label>Word</label>
+                <input type="text" id="word-input" placeholder="Enter word...">
+            </div>
+            
+            <div class="setting-item">
+                <label>Phonetic Spelling</label>
+                <input type="text" id="phonetic-input" placeholder="How to pronounce it...">
+            </div>
+            
+            <button onclick="addPronunciation()">Add Pronunciation</button>
+            
+            <div id="pronunciations-list" style="margin-top: 20px;">
+                <h3>Current Overrides</h3>
+                <div style="max-height: 300px; overflow-y: auto; background: #0f3460; padding: 10px; border-radius: 5px;">
+                    <p id="pronunciations-empty" style="color: #999;">No pronunciations added</p>
+                    <div id="pronunciations"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h2>Advanced</h2>
+            
+            <button onclick="location.href='/debug'" style="background: #533483;">Debug Panel</button>
+            <button onclick="confirmClear()" style="background: #ff0000; margin-top: 10px;">Clear Chat History</button>
+        </div>
+        
+        <a href="/" class="nav-btn">← Back to Dashboard</a>
+    </div>
+    
+    <script>
+        async function loadSettings() {
+            // Load current config
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                document.getElementById('llm-model').textContent = data.models?.text_model || 'Unknown';
+                document.getElementById('vision-model').textContent = data.models?.vision_model || 'Unknown';
+                document.getElementById('voice-model').textContent = data.models?.voice_model || 'Unknown';
+            } catch (err) {
+                console.error('Error loading config:', err);
+            }
+            
+            loadPronunciations();
+        }
+        
+        async function loadPronunciations() {
+            try {
+                const response = await fetch('/api/pronunciation');
+                const data = await response.json();
+                const probs = data.pronunciations || {};
+                const list = document.getElementById('pronunciations');
+                const empty = document.getElementById('pronunciations-empty');
+                
+                if (Object.keys(probs).length === 0) {
+                    empty.style.display = 'block';
+                    list.innerHTML = '';
+                } else {
+                    empty.style.display = 'none';
+                    list.innerHTML = '';
+                    for (const [word, phonetic] of Object.entries(probs)) {
+                        const item = document.createElement('div');
+                        item.style.cssText = 'padding: 8px; margin-bottom: 5px; background: #1a1a2e; border-radius: 3px; display: flex; justify-content: space-between;';
+                        item.innerHTML = `
+                            <span><strong>${word}</strong> → ${phonetic}</span>
+                            <button style="width: auto; padding: 5px 10px; font-size: 12px; background: #ff0000;" onclick="deletePronunciation('${word}')">Delete</button>
+                        `;
+                        list.appendChild(item);
+                    }
+                }
+            } catch (err) {
+                console.error('Error loading pronunciations:', err);
+            }
+        }
+        
+        async function addPronunciation() {
+            const word = document.getElementById('word-input').value.trim();
+            const phonetic = document.getElementById('phonetic-input').value.trim();
+            
+            if (!word || !phonetic) {
+                alert('Please fill in both fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/pronunciation', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({word, phonetic})
+                });
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert('Pronunciation added!');
+                    document.getElementById('word-input').value = '';
+                    document.getElementById('phonetic-input').value = '';
+                    loadPronunciations();
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+        
+        async function deletePronunciation(word) {
+            if (!confirm('Delete pronunciation for "' + word + '"?')) return;
+            
+            try {
+                await fetch('/api/pronunciation/' + encodeURIComponent(word), {
+                    method: 'DELETE'
+                });
+                loadPronunciations();
+            } catch (err) {
+                alert('Error deleting pronunciation');
+            }
+        }
+        
+        function confirmClear() {
+            if (confirm('Clear all chat history? This cannot be undone.')) {
+                fetch('/api/clear-history', {method: 'POST'}).then(() => {
+                    alert('History cleared!');
+                });
+            }
+        }
+        
+        loadSettings();
+    </script>
+</body>
+</html>
