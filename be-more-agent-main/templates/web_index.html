@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pi Robot Web</title>
+  <link rel="stylesheet" href="/static/web.css">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <main class="layout">
+    <section class="card hero">
+      <h1>Pi Robot Web Console</h1>
+      <p>Offline-first voice chat with timers, games, camera checks, and music.</p>
+      <div class="status-row">
+        <span id="llmStatus" class="pill">Checking LLM...</span>
+        <label class="toggle"><input type="checkbox" id="handsFree"> Hands-free</label>
+        <label class="toggle"><input type="checkbox" id="piAudio"> Pi Audio</label>
+      </div>
+      <div class="controls">
+        <button id="holdTalk" class="btn big">Hold To Talk</button>
+        <button id="sendText" class="btn">Send Text</button>
+      </div>
+      <textarea id="textInput" placeholder="Type here or hold to talk. Try: set a timer for 10 minutes"></textarea>
+      <div class="pet-line">Idle pet mood: <span id="petMood">...</span></div>
+    </section>
+
+    <section class="card chat">
+      <h2>Conversation</h2>
+      <div id="chatLog" class="chat-log"></div>
+      <audio id="replyAudio" controls></audio>
+    </section>
+
+    <section class="card side">
+      <h2>Pronunciation Override</h2>
+      <div class="row">
+        <input id="word" placeholder="word">
+        <input id="phonetic" placeholder="phonetic">
+      </div>
+      <button id="savePronounce" class="btn">Save</button>
+      <pre id="pronounceMap" class="mono"></pre>
+    </section>
+
+    <section class="card side">
+      <h2>Debug Panel</h2>
+      <button id="refreshDebug" class="btn">Refresh</button>
+      <pre id="debugBox" class="mono"></pre>
+    </section>
+  </main>
+
+  <script src="/static/web.js"></script>
+</body>
+</html>

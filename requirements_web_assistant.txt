@@ -1,0 +1,28 @@
+# Web Assistant - Windows/Desktop Requirements
+# Use this file for the web-assistant component only.
+#
+# This file installs the Python dependencies needed for the
+# `web-assistant/` Flask backend and production deployment services.
+
+# Web Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+Flask-SQLAlchemy==3.0.5
+Werkzeug==2.3.7
+
+# Environment
+python-dotenv==1.0.0
+
+# Database
+mysql-connector-python>=8.0.33
+PyMySQL>=1.1.0
+SQLAlchemy==2.0.20
+
+# AI Utilities
+requests==2.31.0
+ollama>=0.0.47
+joblib>=1.2.0
+
+# Production monitoring
+psutil>=5.9.0
+

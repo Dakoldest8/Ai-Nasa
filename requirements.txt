@@ -1,0 +1,71 @@
+# Astronaut AI Ecosystem - Full development dependencies
+#
+# This requirements file is intended for developers who want to run the
+# full ecosystem locally for testing and development.
+#
+# Most users should install only the component-specific dependencies:
+# - web assistant: requirements_web_assistant.txt
+# - Raspberry Pi robot: be-more-agent-main/requirements.txt
+
+# --- Core Web Frameworks ---
+Flask==2.3.3
+Flask-CORS==4.0.0
+Flask-SQLAlchemy==3.0.5
+Werkzeug==2.3.7
+fastapi==0.104.1
+uvicorn==0.24.0
+
+# --- Database & Persistence ---
+SQLAlchemy==2.0.20
+mysql-connector-python>=8.0.33
+PyMySQL>=1.1.0
+python-dotenv==1.0.0
+python-decouple==3.8
+PyYAML==6.0.1
+pydantic==2.3.0
+
+# --- AI, ML, and Analytics ---
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.0
+scipy>=1.9.0
+joblib>=1.2.0
+torch==2.0.1
+transformers==4.31.0
+
+# --- Local LLM & AI utilities ---
+ollama>=0.0.47
+llama-cpp-python>=0.2.0
+requests==2.31.0
+
+# --- Speech & Audio (Pi Robot) ---
+Pillow>=9.0.0
+sounddevice>=0.4.5
+onnxruntime>=1.16.0
+librosa==0.10.0
+SpeechRecognition==3.10.0
+
+# --- Production deployment & monitoring ---
+psutil>=5.9.0
+loguru==0.7.0
+
+# --- Auth & Security ---
+PyJWT==2.8.0
+cryptography==41.0.3
+bcrypt==4.0.1
+
+# --- HTTP & Networking ---
+aiohttp==3.8.5
+websockets==11.0.3
+
+# --- Development & Testing ---
+pytest==7.4.0
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
+black==23.9.1
+flake8==6.1.0
+pylint>=3.0.0
+
+# --- Raspberry Pi Specific (Linux only) ---
+RPi.GPIO==0.7.0;sys_platform=='linux'
+Adafruit-Blinka==8.25.0;sys_platform=='linux'

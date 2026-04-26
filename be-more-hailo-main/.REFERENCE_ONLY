@@ -1,0 +1,10 @@
+# THIS FOLDER IS A REFERENCE FORK
+
+This folder contains code for Hailo-10H NPU hardware optimization.
+
+It is NOT the target platform for this project.
+
+The main project uses: ../be-more-agent-main/ (Ollama-based)
+
+This folder is kept for reference/research only. Hailo-specific optimizations can be studied here,
+but for actual development, use be-more-agent-main/.

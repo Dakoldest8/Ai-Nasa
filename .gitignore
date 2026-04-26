@@ -1,0 +1,103 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Environment
+.env
+.env.local
+.env.*.local
+config/.env
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Data & Personal Files
+data/
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+personal/
+*.json.bak
+memory.json
+reminder_*.txt
+notes_*.txt
+
+# Generated Audio & Media
+static/audio/
+*.wav
+*.mp3
+temp_audio/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node (if used)
+node_modules/
+package-lock.json
+npm-debug.log
+
+# PHP
+vendor/
+composer.lock
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Misc
+*.pid
+.cache/
+temp/
+tmp/
+current_image.jpg
+

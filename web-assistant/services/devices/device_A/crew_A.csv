@@ -1,0 +1,9 @@
+text,Depressed,sleep_hours,mood,workload
+"I feel exhausted after long mission tasks",1,5,2,8
+"Hard to focus today, very tired",1,4,2,9
+"Completed tasks but feeling worn out",1,5,3,7
+"Mission was productive but draining",0,6,3,7
+"Short rest helped a little",0,6,4,6
+"Energy improving after better sleep",0,7,4,5
+"Good focus during system checks",0,7,5,5
+"Feeling stable and alert today",0,8,5,4

@@ -1,0 +1,352 @@
+[
+  {
+    "id": 1,
+    "input": "Tell me about space",
+    "response": "I'd be happy to help with that. Here's what I know:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 2,
+    "input": "Search for news",
+    "response": "I'll take care of that for you right away.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 3,
+    "input": "What's up?",
+    "response": "Hey! I'm here to help with anything you need.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 4,
+    "input": "How are you doing?",
+    "response": "Great question! Based on my knowledge:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 5,
+    "input": "Good morning",
+    "response": "Hey! I'm here to help with anything you need.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 6,
+    "input": "What's up?",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 7,
+    "input": "Can you play music?",
+    "response": "I'd be happy to help with that. Here's what I know:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 8,
+    "input": "Good morning",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 9,
+    "input": "What's the weather like?",
+    "response": "I'd be happy to help with that. Here's what I know:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 10,
+    "input": "How are you doing?",
+    "response": "I'd be happy to help with that. Here's what I know:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 11,
+    "input": "What's up?",
+    "response": "Good morning! What would you like to do?",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 12,
+    "input": "Check my schedule",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 13,
+    "input": "Check my schedule",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 14,
+    "input": "Take a picture",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 15,
+    "input": "Take a picture",
+    "response": "Executing that command now.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 16,
+    "input": "What's the weather like?",
+    "response": "I'd be happy to help with that. Here's what I know:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 17,
+    "input": "Turn on the lights",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 18,
+    "input": "Hey robot",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 19,
+    "input": "What's the temperature?",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 20,
+    "input": "Play some music",
+    "response": "I'll take care of that for you right away.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 21,
+    "input": "Check my schedule",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 22,
+    "input": "How does AI work?",
+    "response": "Great question! Based on my knowledge:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 23,
+    "input": "Can you play music?",
+    "response": "I can definitely help you with that information.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 24,
+    "input": "Play some music",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 25,
+    "input": "Hi there",
+    "response": "Hello! How can I help you today?",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 26,
+    "input": "Take a picture",
+    "response": "I'll take care of that for you right away.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 27,
+    "input": "What's up?",
+    "response": "Hey! I'm here to help with anything you need.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 28,
+    "input": "Good morning",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 29,
+    "input": "Set a timer for 5 minutes",
+    "response": "I'll take care of that for you right away.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 30,
+    "input": "Hi there",
+    "response": "Hello! How can I help you today?",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 31,
+    "input": "Can you help me?",
+    "response": "I can definitely help you with that information.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 32,
+    "input": "What's your favorite color?",
+    "response": "That's an interesting question! Let me think about that.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 33,
+    "input": "Can you play music?",
+    "response": "Great question! Based on my knowledge:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 34,
+    "input": "Can you help me?",
+    "response": "That's an interesting question! Let me think about that.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 35,
+    "input": "Play some music",
+    "response": "Executing that command now.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 36,
+    "input": "Hey robot",
+    "response": "Good morning! What would you like to do?",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 37,
+    "input": "Hey robot",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 38,
+    "input": "Good morning",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 39,
+    "input": "Can you play music?",
+    "response": "I'd be happy to help with that. Here's what I know:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 40,
+    "input": "Tell me a joke",
+    "response": "I can definitely help you with that information.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 41,
+    "input": "Can you play music?",
+    "response": "I can definitely help you with that information.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 42,
+    "input": "Good morning",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 43,
+    "input": "What's up?",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 44,
+    "input": "Tell me a joke",
+    "response": "Great question! Based on my knowledge:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 45,
+    "input": "Play some music",
+    "response": "Working on it... task completed successfully.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "command"
+  },
+  {
+    "id": 46,
+    "input": "What's your favorite color?",
+    "response": "That's an interesting question! Let me think about that.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 47,
+    "input": "What's for dinner?",
+    "response": "I'd be happy to help with that. Here's what I know:",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "question"
+  },
+  {
+    "id": 48,
+    "input": "What's up?",
+    "response": "Hi there! I'm ready to assist you.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 49,
+    "input": "What's up?",
+    "response": "Hello! How can I help you today?",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  },
+  {
+    "id": 50,
+    "input": "Hello",
+    "response": "Hey! I'm here to help with anything you need.",
+    "timestamp": "2026-04-22T13:31:39.478823",
+    "type": "greeting"
+  }
+]

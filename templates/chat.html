@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Hybrid AI Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background: #0f3460;
+            padding: 15px 20px;
+            border-bottom: 3px solid #00d4ff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        header h1 {
+            color: #00d4ff;
+            font-size: 20px;
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 20px auto;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        #chat-window {
+            flex: 1;
+            background: #1a1a2e;
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user-message {
+            background: #533483;
+            border-left: 4px solid #00d4ff;
+            text-align: right;
+        }
+        
+        .bot-message {
+            background: #0f3460;
+            border-left: 4px solid #00ff00;
+        }
+        
+        .message-label {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #message-input {
+            flex: 1;
+            background: #1a1a2e;
+            border: 2px solid #00d4ff;
+            color: #eee;
+            padding: 12px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        #message-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .input-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .status-indicator {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>💬 Chat with AI Agent</h1>
+    </header>
+    
+    <div class="container">
+        <div id="chat-window"></div>
+        
+        <div class="status-indicator" id="status">Ready to chat... Say hello!</div>
+        
+        <div class="input-area">
+            <input 
+                type="text" 
+                id="message-input" 
+                placeholder="Type your message here..."
+                onkeypress="if(event.key==='Enter') sendMessage()"
+            >
+            <div class="input-buttons">
+                <button onclick="sendMessage()">Send</button>
+                <button onclick="toggleMic()" id="mic-btn" title="Click to record audio">🎤</button>
+                <button onclick="clearChat()">Clear</button>
+                <button onclick="window.location.href='/'">Back</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const messageInput = document.getElementById('message-input');
+        const statusDiv = document.getElementById('status');
+        const micBtn = document.getElementById('mic-btn');
+        
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isRecording = false;
+        
+        async function toggleMic() {
+            if (!isRecording) {
+                // Start recording
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    
+                    mediaRecorder.ondataavailable = (event) => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = async () => {
+                        // Send audio to transcribe
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        await transcribeAudio(audioBlob);
+                        
+                        // Stop all tracks
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+                    
+                    mediaRecorder.start();
+                    isRecording = true;
+                    micBtn.style.background = '#ff0000';
+                    micBtn.textContent = '⏹️';
+                    statusDiv.textContent = 'Recording...';
+                } catch (error) {
+                    alert('Microphone access denied: ' + error.message);
+                    statusDiv.textContent = 'Mic access denied';
+                }
+            } else {
+                // Stop recording
+                mediaRecorder.stop();
+                isRecording = false;
+                micBtn.style.background = '#533483';
+                micBtn.textContent = '🎤';
+                statusDiv.textContent = 'Transcribing...';
+            }
+        }
+        
+        async function transcribeAudio(audioBlob) {
+            try {
+                const formData = new FormData();
+                formData.append('file', audioBlob, 'audio.wav');
+                
+                const response = await fetch('/api/transcribe', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    messageInput.value = data.text;
+                    statusDiv.textContent = 'Transcribed: ' + data.text;
+                    messageInput.focus();
+                } else {
+                    statusDiv.textContent = 'Transcription error: ' + (data.message || 'Unknown');
+                }
+            } catch (error) {
+                statusDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Disable input
+            messageInput.disabled = true;
+            statusDiv.textContent = 'Thinking...';
+            
+            // Add user message
+            addMessage(message, 'user');
+            messageInput.value = '';
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        message: message,
+                        history: []
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    addMessage(data.response, 'bot');
+                    statusDiv.textContent = 'Ready';
+                } else {
+                    addMessage('Error: ' + (data.message || 'Unknown error'), 'bot');
+                    statusDiv.textContent = 'Error occurred';
+                }
+            } catch (error) {
+                addMessage('Connection error: ' + error.message, 'bot');
+                statusDiv.textContent = 'Connection error';
+            }
+            
+            messageInput.disabled = false;
+            messageInput.focus();
+        }
+        
+        function addMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message ' + (sender === 'user' ? 'user-message' : 'bot-message');
+            
+            const label = document.createElement('div');
+            label.className = 'message-label';
+            label.textContent = sender === 'user' ? 'You' : 'Bot';
+            
+            const content = document.createElement('div');
+            content.textContent = text;
+            
+            msgDiv.appendChild(label);
+            msgDiv.appendChild(content);
+            chatWindow.appendChild(msgDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+        
+        function clearChat() {
+            if (confirm('Clear all messages?')) {
+                fetch('/api/clear-history', {method: 'POST'});
+                chatWindow.innerHTML = '';
+                statusDiv.textContent = 'Chat cleared';
+            }
+        }
+        
+        // Focus input on load
+        messageInput.focus();
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# THIS FOLDER IS DEPRECATED
+
+This folder contains legacy code that has been consolidated into be-more-agent-main/.
+
+DO NOT USE FOR NEW DEVELOPMENT.
+
+For current Pi robot setup, use: ../be-more-agent-main/
+
+This folder is kept for git history only. All functionality has been migrated to be-more-agent-main/.

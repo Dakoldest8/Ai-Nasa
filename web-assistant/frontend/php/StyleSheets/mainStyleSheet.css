@@ -1,0 +1,217 @@
+/* === Global Body Styles === */
+body {
+    background-color: rgb(11, 61, 145);
+    color: rgb(0, 0, 0);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 40px;
+    overflow: hidden;
+}
+
+/* === Headings === */
+h1 {
+    margin-top: 60px;
+    font-size: 2.5em;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+}
+
+h3 {
+    margin-top: 10px;
+    font-size: 1.3em;
+    opacity: 0.9;
+}
+
+header {
+    margin-top: 40px;
+    font-size: 2.2em;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+/* === Login Box / Menu Box === */
+.login-box,
+.menu-box {
+    background: rgba(0, 0, 0, 0.25);
+    width: 380px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    transition: opacity 0.5s ease;
+}
+
+/* === Input Fields === */
+input, textarea {
+    width: 80%;
+    padding: 14px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 300px;
+    font-size: 16px;
+}
+
+/* === Buttons === */
+button,
+.menu-button {
+    width: 85%;
+    padding: 14px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: rgb(226, 62, 13);
+    color: white;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+button:hover,
+.menu-button:hover {
+    background-color: rgb(226, 62, 13);
+    transform: translateY(-3px);
+}
+
+.menu-button {
+    background-color: rgb(0, 128, 255);
+}
+
+.menu-button:hover {
+    background-color: rgb(77, 184, 255);
+}
+
+.logout-btn {
+    background-color: rgb(182, 17, 17);
+}
+
+.logout-btn:hover {
+    background-color: rgb(211, 49, 49);
+}
+
+/* === Username Banner === */
+.username-banner {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 1em;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+/* === Overlay and Iframe === */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+iframe {
+    width: 80%;
+    height: 80%;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.closeBtn {
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    background-color: rgb(182, 17, 17);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.closeBtn:hover {
+    background-color: rgb(211, 49, 49);
+}
+
+/* === Reminder Display === */
+.reminder-display {
+    background: rgba(0, 0, 0, 0.35);
+    width: 500px;
+    margin: 25px auto 10px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    font-size: 1.05em;
+    line-height: 1.5em;
+}
+
+.reminder-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: rgb(77, 184, 255);
+}
+
+/* === Chat Section === */
+#chat {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    color: black;
+    height: 300px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.msg {
+    margin: 10px 0;
+    word-wrap: break-word;
+}
+
+.bot {
+    color: rgb(0, 0, 255);
+}
+
+.user {
+    color: rgb(128, 0, 255);
+    text-align: right;
+}
+
+#input-box {
+    margin-top: 15px;
+}
+
+#input {
+    width: 70%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgb(192, 192, 192);
+}
+
+/* === NASA Logo === */
+.nasa-logo {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    opacity: 0.9;
+    pointer-events: none;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}

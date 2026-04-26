@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: #0f3460;
+            padding: 15px 20px;
+            border-bottom: 3px solid #00d4ff;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        h2 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .game-card {
+            background: #1a1a2e;
+            border: 2px solid #00d4ff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .game-card:hover {
+            background: #16213e;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .game-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .game-title {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .game-desc {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .nav-btn {
+            background: #533483;
+            border: 2px solid #00d4ff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎮 Games & Entertainment</h1>
+    </header>
+    
+    <div class="container">
+        <h2>Available Games</h2>
+        
+        <div class="games-grid">
+            <div class="game-card" onclick="startGame('trivia')">
+                <div class="game-icon">🧠</div>
+                <div class="game-title">Trivia</div>
+                <div class="game-desc">Test your knowledge</div>
+            </div>
+            
+            <div class="game-card" onclick="startGame('guessing')">
+                <div class="game-icon">🎯</div>
+                <div class="game-title">Guessing Game</div>
+                <div class="game-desc">Guess the number</div>
+            </div>
+            
+            <div class="game-card" onclick="startGame('riddles')">
+                <div class="game-icon">🔮</div>
+                <div class="game-title">Riddles</div>
+                <div class="game-desc">Solve riddles</div>
+            </div>
+            
+            <div class="game-card" onclick="startGame('story')">
+                <div class="game-icon">📖</div>
+                <div class="game-title">Story Time</div>
+                <div class="game-desc">Interactive stories</div>
+            </div>
+        </div>
+        
+        <a href="/" class="nav-btn">← Back to Dashboard</a>
+    </div>
+    
+    <script>
+        function startGame(gameType) {
+            fetch('/api/play-game', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    game_type: gameType
+                })
+            }).then(r => r.json()).then(data => {
+                if (data.status === 'success') {
+                    alert('Starting ' + gameType + '!\n\nCheck the chat window or AI Agent display to play.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
