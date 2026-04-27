@@ -35,12 +35,14 @@ Astronaut-AI-Ecosystem/
 ├── be-more-agent-main/      # Active Raspberry Pi robot stack
 ├── shared/                  # Shared utilities, datasets, and helpers
 ├── docs/                    # Architecture and setup documentation
+│   ├── FEDERATED_LEARNING.md  # Federated learning setup and API guide
 ├── pi-robot/                # Deprecated folder (do not use)
 ├── be-more-hailo-main/      # Reference-only Hailo fork
 ├── requirements.txt         # Full ecosystem dependencies
 ├── requirements_web_assistant.txt  # Web assistant dependencies
 ├── TODO.md                  # Current phase checklist
 ├── start_all_services.bat   # Windows service startup wrapper
+├── start_federated_learning.bat  # Federated learning services wrapper
 ├── stop_all_services.bat    # Windows service stop wrapper
 └── README.md                # This overview
 ```
@@ -48,7 +50,7 @@ Astronaut-AI-Ecosystem/
 ## What this system does
 - Provides a personal assistant web stack with a Python Flask backend and PHP frontend
 - Includes local recommendation hints in the web assistant UI, with a manual opt-out toggle for privacy-preserving behavior
-- Integrates Thorium Web EPUB reader for e-book support with activity logging for AI personalization
+- Integrates Thorium Web EPUB reader for e-book support with activity logging for AI personalization and embedded iframe in web interface
 - Supports AI routing, memory, federated learning, analytics, and robot integration
 - Includes a Raspberry Pi robot agent with voice, wake-word, and local LLM capabilities
 - Uses local-first AI where possible and avoids cloud dependency for core behavior
@@ -271,6 +273,15 @@ Practical test flow for the current project:
     - `http://localhost:5000/health`
 3. Open the PHP frontend and confirm login and chat load.
 4. Run `stop_all_services.bat`.
+
+### Federated Learning
+1. Run `start_federated_learning.bat --skip-install` from the repo root.
+2. Check federated learning endpoints:
+    - `http://localhost:8000/federated/register` (POST)
+    - `http://localhost:8000/federated/round/start` (POST)
+    - `http://localhost:8000/federated/update/submit` (POST)
+3. Use the web interface at `http://localhost:5000` to interact with federated learning features.
+4. Run `stop_all_services.bat` to stop.
 
 ### Raspberry Pi Robot
 1. Run `bash be-more-agent-main/setup.sh` after dependency changes.

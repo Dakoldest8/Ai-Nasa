@@ -21,22 +21,95 @@ $USER_ID = $_SESSION['user_id'];
 <style>
        body {
         background-color: rgb(11, 61, 145);
-        text-align: center;
-        padding: 40px;
         font-family: Arial, sans-serif;
         color: white;
         margin: 0;
-        overflow: hidden;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     header {
         font-size: 24px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #navigation {
+        text-align: center;
+        padding: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #navigation button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        margin: 5px;
+    }
+
+    #navigation button:hover {
+        background-color: #218838;
+    }
+
+    #navigation button.active {
+        background-color: #007bff;
+    }
+
+    .main-container {
+        display: flex;
+        flex: 1;
+        gap: 0;
+        overflow: hidden;
+    }
+
+    .panel {
+        display: none;
+        flex: 1;
+        overflow: auto;
+        padding: 20px;
+    }
+
+    .panel.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #chat-panel {
+        align-items: center;
+    }
+
+    #epub-panel {
+        align-items: stretch;
+        padding: 0;
+    }
+
+    #epub-reader-container {
+        width: 100%;
+        height: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0;
+    }
+
+    #epub-reader-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .chat-content {
+        max-width: 600px;
+        width: 100%;
     }
 
     #chat {
-        max-width: 600px;
-        margin: 0 auto;
         background: white;
         padding: 20px;
         border-radius: 10px;
@@ -44,6 +117,7 @@ $USER_ID = $_SESSION['user_id'];
         height: 300px;
         overflow-y: auto;
         text-align: left;
+        margin-bottom: 10px;
     }
 
     .msg {
@@ -61,7 +135,10 @@ $USER_ID = $_SESSION['user_id'];
     }
 
     #input-box {
-        margin-top: 15px;
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
     }
 
     #input {
@@ -78,11 +155,10 @@ $USER_ID = $_SESSION['user_id'];
         padding: 10px 20px;
         border-radius: 8px;
         cursor: pointer;
-        margin-left: 10px;
     }
 
     button:hover {
-        background-color: rgb(226, 62, 13);
+        background-color: rgb(200, 50, 10);
     }
 
     #privacy-controls {
@@ -105,50 +181,47 @@ $USER_ID = $_SESSION['user_id'];
         font-size: 0.9rem;
         color: #d4d4d4;
     }
-
-    #navigation {
-        text-align: center;
-        margin: 10px 0;
-    }
-
-    #navigation button {
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 0.9rem;
-    }
-
-    #navigation button:hover {
-        background-color: #218838;
-    }
 </style>
 </head>
 <body>
 
-<header>AI Assistant</header>
+<header>AI Assistant - ECLIPSE</header>
 
 <div id="navigation">
-    <button onclick="window.open('http://localhost:3000', '_blank')">Open EPUB Reader</button>
+    <button class="nav-btn active" onclick="switchPanel('chat')">💬 Chat</button>
+    <button class="nav-btn" onclick="switchPanel('epub')">📖 EPUB Reader</button>
+    <button class="nav-btn" onclick="openFederatedDashboard()" style="background-color: #007bff;">📊 FL Dashboard</button>
 </div>
 
-<div id="privacy-controls">
-    <label>
-        <input type="checkbox" id="recommendations-toggle">
-        Enable personalized recommendations
-    </label>
-    <span id="recommendations-status"></span>
-</div>
+<div class="main-container">
+    <!-- Chat Panel -->
+    <div id="chat-panel" class="panel active">
+        <div class="chat-content">
+            <div id="chat">
+                <div class="msg bot">Hello, astronaut! How can I assist your mission today?</div>
+            </div>
 
-<div id="chat">
-    <div class="msg bot">Hello, astronaut! How can I assist your mission today?</div>
-</div>
+            <div id="input-box">
+                <input type="text" id="input" placeholder="Type your message here..." onkeypress="if(event.key==='Enter') send();">
+                <button onclick="send()">Send</button>
+            </div>
 
-<div id="input-box">
-    <input type="text" id="input" placeholder="Type your message here..." onkeypress="if(event.key==='Enter') send();">
-    <button onclick="send()">Send</button>
+            <div id="privacy-controls">
+                <label>
+                    <input type="checkbox" id="recommendations-toggle">
+                    Enable personalized recommendations
+                </label>
+                <span id="recommendations-status"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- EPUB Reader Panel -->
+    <div id="epub-panel" class="panel">
+        <div id="epub-reader-container">
+            <iframe id="epub-reader-iframe" src="http://localhost:3000"></iframe>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -178,6 +251,49 @@ recommendationsToggle.addEventListener("change", () => {
 });
 
 loadRecommendationPreference();
+
+// Panel switching functionality
+function switchPanel(panelName) {
+    // Hide all panels
+    document.querySelectorAll('.panel').forEach(panel => {
+        panel.classList.remove('active');
+    });
+
+    // Deactivate all nav buttons
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Show selected panel
+    document.getElementById(panelName + '-panel').classList.add('active');
+
+    // Activate corresponding nav button
+    event.target.classList.add('active');
+
+    // Refresh EPUB reader iframe if switching to it
+    if (panelName === 'epub') {
+        const iframe = document.getElementById('epub-reader-iframe');
+        if (iframe.src) {
+            // Force refresh
+            iframe.src = iframe.src;
+        }
+    }
+}
+
+function openFederatedDashboard() {
+    window.location.href = 'federatedDashboard.php';
+}
+
+function toggleEPUBReader() {
+    const container = document.getElementById('epub-reader-container');
+    const isVisible = container.style.display !== 'none';
+    container.style.display = isVisible ? 'none' : 'block';
+    if (!isVisible) {
+        // Refresh the iframe when showing
+        const iframe = document.getElementById('epub-reader-iframe');
+        iframe.src = iframe.src;
+    }
+}
 
 async function send() {
     const input = document.getElementById("input");

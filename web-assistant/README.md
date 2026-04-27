@@ -8,7 +8,7 @@ It includes the Python Flask backend and the PHP frontend used by the Windows/XA
 - Python Flask backend in [app.py](app.py)
 - Central AI routing service in [services/central_server](services/central_server)
 - Context-aware recommendation engine with user opt-out in [services/recommendation](services/recommendation)
-- Thorium Web EPUB reader integrated in [frontend/epub-reader](frontend/epub-reader) (runs on port 3000) with activity logging for AI learning
+- Thorium Web EPUB reader integrated in [frontend/epub-reader](frontend/epub-reader) (runs on port 3000) with activity logging for AI learning and embedded iframe in PHP frontend
 - Production deployment monitoring in [services/production_deployment](services/production_deployment)
 - Authentication, database, and analytics services in `services/`
 - PHP frontend under [frontend/php](frontend/php)

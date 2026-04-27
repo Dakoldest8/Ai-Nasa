@@ -6,6 +6,7 @@ REST endpoints for federated learning coordination and participation
 from flask import Blueprint, request, jsonify
 import logging
 from typing import Dict, Any
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -16,11 +17,13 @@ try:
         get_privacy_engine,
         FederatedParticipant
     )
+    from services.federated_learning.metrics import get_metrics
 except ImportError:
     logger.warning("Federated learning modules not available")
     get_federated_coordinator = None
     get_privacy_engine = None
     FederatedParticipant = None
+    get_metrics = None
 
 fed_bp = Blueprint('federated', __name__, url_prefix='/federated')
 
@@ -267,7 +270,158 @@ def simulate_participant():
         logger.error(f"Participant simulation failed: {e}")
         return jsonify({"error": str(e)}), 500
 
-def register_federated_endpoints(app):
+# Metrics Endpoints
+@fed_bp.route('/metrics/all', methods=['GET'])
+def get_all_metrics():
+    """Get all federated learning metrics and visualizations"""
+    if not get_metrics:
+        return jsonify({"error": "Metrics not available"}), 503
+
+    try:
+        metrics = get_metrics()
+        all_metrics = metrics.get_all_metrics()
+
+        return jsonify({
+            "status": "success",
+            "metrics": all_metrics
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to retrieve metrics: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@fed_bp.route('/metrics/summary', methods=['GET'])
+def get_metrics_summary():
+    """Get summary statistics for federated learning"""
+    if not get_metrics:
+        return jsonify({"error": "Metrics not available"}), 503
+
+    try:
+        metrics = get_metrics()
+        summary = metrics.get_summary_stats()
+
+        return jsonify({
+            "status": "success",
+            "summary": summary
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to retrieve summary: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@fed_bp.route('/metrics/accuracy', methods=['GET'])
+def get_accuracy_metrics():
+    """Get accuracy history for visualization"""
+    if not get_metrics:
+        return jsonify({"error": "Metrics not available"}), 503
+
+    try:
+        metrics = get_metrics()
+        accuracy_history = metrics.get_accuracy_history()
+
+        return jsonify({
+            "status": "success",
+            "accuracy_history": accuracy_history
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to retrieve accuracy metrics: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@fed_bp.route('/metrics/convergence', methods=['GET'])
+def get_convergence_metrics():
+    """Get convergence data for loss curve visualization"""
+    if not get_metrics:
+        return jsonify({"error": "Metrics not available"}), 503
+
+    try:
+        metrics = get_metrics()
+        convergence_data = metrics.get_convergence_history()
+
+        return jsonify({
+            "status": "success",
+            "convergence_data": convergence_data
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to retrieve convergence metrics: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@fed_bp.route('/metrics/heatmap', methods=['GET'])
+def get_heatmap_metrics():
+    """Get heatmap data showing participant accuracy across rounds"""
+    if not get_metrics:
+        return jsonify({"error": "Metrics not available"}), 503
+
+    try:
+        metrics = get_metrics()
+        heatmap_data = metrics.get_heatmap_data()
+
+        return jsonify({
+            "status": "success",
+            "heatmap": heatmap_data
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to retrieve heatmap data: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@fed_bp.route('/metrics/record-round', methods=['POST'])
+def record_round_metrics():
+    """Record metrics for a completed federated learning round"""
+    if not get_metrics:
+        return jsonify({"error": "Metrics not available"}), 503
+
+    try:
+        data = request.get_json()
+        round_number = data.get('round_number')
+        accuracy = data.get('accuracy')
+        loss = data.get('loss')
+        convergence_rate = data.get('convergence_rate')
+
+        if round_number is None or accuracy is None:
+            return jsonify({"error": "round_number and accuracy required"}), 400
+
+        metrics = get_metrics()
+        metrics.record_round_complete(round_number, accuracy, loss, convergence_rate)
+
+        return jsonify({
+            "status": "success",
+            "message": f"Metrics recorded for round {round_number}"
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to record round metrics: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@fed_bp.route('/metrics/record-participant', methods=['POST'])
+def record_participant_metrics():
+    """Record metrics for a participant in a round"""
+    if not get_metrics:
+        return jsonify({"error": "Metrics not available"}), 503
+
+    try:
+        data = request.get_json()
+        device_id = data.get('device_id')
+        round_number = data.get('round_number')
+        accuracy = data.get('accuracy')
+        loss = data.get('loss')
+        samples = data.get('samples', 0)
+
+        if not device_id or round_number is None or accuracy is None:
+            return jsonify({"error": "device_id, round_number, and accuracy required"}), 400
+
+        metrics = get_metrics()
+        metrics.record_participant_metrics(device_id, round_number, accuracy, loss, samples)
+
+        return jsonify({
+            "status": "success",
+            "message": f"Metrics recorded for {device_id} in round {round_number}"
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to record participant metrics: {e}")
+        return jsonify({"error": str(e)}), 500
     """Register federated learning endpoints with Flask app"""
     try:
         app.register_blueprint(fed_bp)
